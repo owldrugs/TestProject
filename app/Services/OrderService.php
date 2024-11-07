@@ -23,9 +23,9 @@ class OrderService
         $barcode = "";
 
         foreach ($tickets as $key => $ticket) {
-            do{
+            do {
                 $tickets[$key]['barcode'] = $this->generateUniqueBarcode();
-            }while(!empty(DB::table('order_tickets')->where('barcode', $tickets[$key]['barcode'])->first()));
+            } while (!empty(DB::table('order_tickets')->where('barcode', $tickets[$key]['barcode'])->first()));
 
         }
         //
@@ -36,18 +36,20 @@ class OrderService
                 $this->createOrder($event_id, $event_date, $tickets);
             }
             throw new \Exception('Не удалось забронировать заказ: ' . $response['error']);
+            die();
         }
 
         $confirmResponse = $this->approveOrder($event_id, $event_date, $tickets);
 
         if ($confirmResponse['error'] ?? null) {
             throw new \Exception('Ошибка подтверждения заказа: ' . $confirmResponse['error']);
+            die();
         }
 
         $this->saveOrder($event_id, $event_date, $tickets);
     }
 
-    protected function generateUniqueBarcode($length = 10) : string
+    protected function generateUniqueBarcode($length = 10): string
     {
         $barcode = "";
         for ($i = 0; $i < $length; $i++) {
@@ -56,7 +58,7 @@ class OrderService
         return $barcode; // Генерация случайного строки 10 символов
     }
 
-    protected function bookOrder($event_id, $event_date, $tickets) : array
+    protected function bookOrder($event_id, $event_date, $tickets): array
     {
         // В обычной ситуации будет: $response = Http::post('https://api.site.com/book', [...]);
 
@@ -69,7 +71,7 @@ class OrderService
         return $mockResponses[array_rand($mockResponses)];
     }
 
-    protected function approveOrder($barcode) : array
+    protected function approveOrder($barcode): array
     {
         // В обычной ситуации будет: $response = Http::post('https://api.site.com/approve', ['barcode' => $barcode]);
 
@@ -85,7 +87,7 @@ class OrderService
         return $mockResponses[array_rand($mockResponses)];
     }
 
-    protected function saveOrder($event_id, $event_date, $tickets) : void
+    protected function saveOrder($event_id, $event_date, $tickets): void
     {
         $equal_price = 0;
         foreach ($tickets as $key => $ticket) {
@@ -95,12 +97,12 @@ class OrderService
         }
 
         $order = new Order();
-        $order_id = $order->store($event_id,$equal_price,$event_date);
+        $order_id = $order->store($event_id, $equal_price, $event_date);
 
         foreach ($tickets as $item) {
             $order_ticket = new OrderTicket();
 
-            $order_ticket->store($order_id,$item['type_id'],$item['barcode']);
+            $order_ticket->store($order_id, $item['type_id'], $item['barcode']);
         }
     }
 

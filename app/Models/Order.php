@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Order extends Model
 {
 
@@ -16,12 +17,13 @@ class Order extends Model
         'equal_price',
     ];
 
-    public function tickets() : HasMany
+    public function tickets(): HasMany
     {
         return $this->hasMany(OrderTicket::class);
     }
 
-    public function store($event_id,$equal_price,$event_date){
+    public function store($event_id, $equal_price, $event_date)
+    {
 
         $order = new Order();
 

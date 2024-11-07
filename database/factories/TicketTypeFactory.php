@@ -17,8 +17,8 @@ class TicketTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=>$this->faker->name(),
-            'price'=>$this->faker->numberBetween(1,10)*100,
+            'name' => $this->faker->name(),
+            'price' => $this->faker->numberBetween(1, 10) * 100,
         ];
     }
 }

@@ -17,20 +17,20 @@ class DatabaseSeeder extends Seeder
         //5 случайных событий
         Event::factory(5)->create();
 
-        //5 типо билетов
+        //3 типа билетов
         TicketType::factory()->create([
-            'name'=>'Для взрослых',
-            'price'=>450
+            'name' => 'Для взрослых',
+            'price' => 450
         ]);
 
         TicketType::factory()->create([
-            'name'=>'Для детей',
-            'price'=>450
+            'name' => 'Для детей',
+            'price' => 450
         ]);
 
         TicketType::factory()->create([
-            'name'=>'Для льготников',
-            'price'=>250
+            'name' => 'Для льготников',
+            'price' => 250
         ]);
     }
 }
